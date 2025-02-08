@@ -1,0 +1,27 @@
+name: MiHoYo Sign-In Script
+
+on:
+  schedule:
+    - cron: '20 0 * * *' # 每天UTC 0:20, 对应北京时间8:20
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run main.js
+      env:
+        GENSHIN_COOKIES: ${{ secrets.GENSHIN_COOKIES }}
+      run: node main.js

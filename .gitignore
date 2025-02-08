@@ -1,0 +1,21 @@
+# dependencies
+node_modules
+
+# lock files
+yarn.lock
+package-lock.json
+
+# log files
+*-debug.log
+*-error.log
+
+# compile
+dist
+
+# local env files
+.env.local
+.env.*.local
+.env
+
+# misc
+.DS_Store
