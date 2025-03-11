@@ -59,7 +59,7 @@
 
    on:
      schedule:
-       - cron: '20 0 * * *' # 每天UTC 0:20, 对应北京时间8:20
+       - cron: '20 23 * * *' # 每天UTC 23:20, 对应北京时间7:20，实际运行时间有偏差。
      workflow_dispatch: # 允许手动触发
 
    jobs:
