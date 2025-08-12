@@ -81,7 +81,7 @@ const getCookieConfig = async () => {
   try {
     const genshinCookieArr = genshinCookies ? genshinCookies.split(',') : []
     // 米家游戏可通用Cookie
-    return { Genshin: genshinCookieArr, StarRail: genshinCookieArr }
+    return { Genshin: genshinCookieArr, StarRail: genshinCookieArr, ZZZ: genshinCookieArr }
   } catch (error) {
     console.error("Failed to parse environment variable data as JSON:", error.message);
     throw new Error("Failed to parse environment variable data as JSON.");
