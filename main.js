@@ -22,6 +22,16 @@ let ROLE = {
     is_chosen: false,
     region_name: '',
     is_official: false
+  },
+  ZZZ: {
+    game_biz: '',
+    region: '',
+    game_uid: '',
+    nickname: '',
+    level: -1,
+    is_chosen: false,
+    region_name: '',
+    is_official: false
   }
 }
 
@@ -84,12 +94,12 @@ const randomSleep = (min, max) => {
   return new Promise((resolve) => setTimeout(resolve, delay * 1000))
 }
 
-async function getDS () {
-    const s = "yUZ3s0Sna1IrSNfk29Vo6vRapdOyqyhB";
-    const t = Math.floor(Date.now() / 1e3);
-    const r = Math.random().toString(36).slice(-6);
-    const c = `salt=${s}&t=${t}&r=${r}`;
-    return `${t},${r},${md5(c)}`;
+async function getDS() {
+  const s = "yUZ3s0Sna1IrSNfk29Vo6vRapdOyqyhB";
+  const t = Math.floor(Date.now() / 1e3);
+  const r = Math.random().toString(36).slice(-6);
+  const c = `salt=${s}&t=${t}&r=${r}`;
+  return `${t},${r},${md5(c)}`;
 }
 
 const getHeaders = async (Cookie, whichHeader) => {
@@ -97,15 +107,15 @@ const getHeaders = async (Cookie, whichHeader) => {
 }
 
 const getRole = async (cookie, gameKey) => {
-  const GAME_BIZ = { Genshin: 'hk4e_cn', StarRail: 'hkrpg_cn' }
+  const GAME_BIZ = { Genshin: 'hk4e_cn', StarRail: 'hkrpg_cn', ZZZ: 'zzz' }
   const headers = await getHeaders(cookie, ROLE_HEADERS)
   const res = await $axios.request({
     method: 'GET',
     headers,
     url: `https://${WEB_HOST}/binding/api/getUserGameRolesByCookie?game_biz=${GAME_BIZ[gameKey]}`
   }).catch(err => {
-      console.error('登录错误\n' + err);
-      return 0;
+    console.error('登录错误\n' + err);
+    return 0;
   });
   if (res.data['retcode'] !== 0) {
     console.info('帐号未登录,请检查cookie');
@@ -130,10 +140,10 @@ const getRole = async (cookie, gameKey) => {
 }
 
 async function Sign_In(cookie, gameKey) {
-  const ACT_ID = { Genshin: 'e202311201442471', StarRail: 'e202304121516551' }
-  const REGION = { Genshin: 'cn_gf01', StarRail: 'prod_gf_cn' }
-  const SIGNGAME = { Genshin: 'hk4e', StarRail: 'hkrpg' }
-  
+  const ACT_ID = { Genshin: 'e202311201442471', StarRail: 'e202304121516551', ZZZ: 'e202406242138391' }
+  const REGION = { Genshin: 'cn_gf01', StarRail: 'prod_gf_cn', ZZZ: 'prod_gf_cn' }
+  const SIGNGAME = { Genshin: 'hk4e', StarRail: 'hkrpg', ZZZ: 'zzz' }
+
   const headers = await getHeaders(cookie, { ...SIGN_HEADERS, 'x-rpc-signgame': SIGNGAME[gameKey] })
   const data = {
     act_id: ACT_ID[gameKey],
@@ -175,6 +185,7 @@ const doGameSign = async (gameKey) => {
 async function main() {
   await doGameSign('Genshin')
   await doGameSign('StarRail')
+  await doGameSign('ZZZ')
 }
 
 main().then()
